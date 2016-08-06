@@ -1,2 +1,8 @@
 allow qti_init_shell radio_prop:property_service { set };
 allow init debugfs:dir { mounton relabelto };
+
+allow init self:capability { chown net_admin };
+allow init sysfs_devices_system_cpu:file { setattr w_file_perms };
+
+allow qti_init_shell self:capability { chown net_admin };
+allow qti_init_shell sysfs_devices_system_cpu:file { setattr w_file_perms };

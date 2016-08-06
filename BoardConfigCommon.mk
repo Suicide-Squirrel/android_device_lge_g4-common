@@ -180,6 +180,8 @@ TARGET_POWERHAL_VARIANT := qcom
 BACKLIGHT_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TARGET_TAP_TO_WAKE_NODE := "/sys/devices/virtual/input/lge_touch/tap2wake"
 
+TARGET_POWERHAL_SET_INTERACTIVE_EXT := $(COMMON_PATH)/power/power_ext.c
+
 # Qualcomm support
 BOARD_USES_QCOM_HARDWARE := true
 
