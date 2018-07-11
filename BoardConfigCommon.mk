@@ -154,7 +154,11 @@ COMMON_GLOBAL_CFLAGS += \
     -DBOARD_CHARGING_CMDLINE_VALUE='"chargerlogo"'
 
 # Power
+WITH_CM_CHARGER := false
+BOARD_CHARGER_DISABLE_INIT_BLANK := true
+BOARD_CHARGER_ENABLE_SUSPEND := false
 TARGET_POWERHAL_VARIANT := qcom
+BACKLIGHT_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TARGET_TAP_TO_WAKE_NODE := "/sys/devices/virtual/input/lge_touch/tap2wake"
 
 # Qualcomm support
@@ -172,6 +176,9 @@ BOARD_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy
 
 # Disable HW based full disk encryption
 TARGET_HW_DISK_ENCRYPTION := false
+
+# healthd related
+BOARD_HEALTHD_CUSTOM_CHARGER_RES := $(COMMON_PATH)/healthd/res/images/charger
 
 # NFC
 BOARD_NFC_CHIPSET := pn547
