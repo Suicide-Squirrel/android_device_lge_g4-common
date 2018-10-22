@@ -49,8 +49,8 @@ camera_module_t HAL_MODULE_INFO_SYM = {
     .set_callbacks          = qcamera::QCamera2Factory::set_callbacks,
     .get_vendor_tag_ops     = qcamera::QCamera3VendorTags::get_vendor_tag_ops,
     .open_legacy            = qcamera::QCamera2Factory::open_legacy,
+    .set_torch_mode         = qcamera::QCamera2Factory::set_torch_mode,
 #ifndef USE_L_MR1
-    .set_torch_mode         = NULL,
     .init                   = NULL,
 #endif
     .reserved               = {0}
