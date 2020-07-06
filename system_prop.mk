@@ -34,6 +34,15 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.bt.bdaddr_path="/data/misc/bluetooth/bdaddr" \
     persist.service.avrcp.browsing=1
 
+# Dalvik
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.heapstartsize=8m \
+    dalvik.vm.heapgrowthlimit=256m \
+    dalvik.vm.heapsize=512m \
+    dalvik.vm.heaptargetutilization=0.50 \
+    dalvik.vm.heapminfree=1m \
+    dalvik.vm.heapmaxfree=8m
+
 # Display
 #
 # OpenGLES:
