@@ -1,0 +1,1 @@
+allow tee smem_log_device:chr_file rw_file_perms;
