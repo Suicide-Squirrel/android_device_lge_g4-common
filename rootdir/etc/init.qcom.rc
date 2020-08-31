@@ -368,6 +368,8 @@ on boot
     write /sys/devices/virtual/thermal/thermal_zone14/ctrl_crit_temp 0
 
 on post-fs
+    start qseecomd
+    wait_for_prop sys.listeners.registered true
     # for OOBE and PackageManager to access fotaBoot
     chmod 0666 /cache/recovery/last_fotaBoot
 
@@ -995,6 +997,8 @@ service qseecomd /system/bin/qseecomd
     class core
     user root
     group root
+    disabled
+    writepid /dev/cpuset/foreground/tasks
 
 service perfd /system/vendor/bin/perfd
     class main
