@@ -989,9 +989,10 @@ service wpa_supplicant /system/bin/wpa_supplicant \
 
 #start camera server as daemon
 service qcamerasvr /system/bin/mm-qcamera-daemon
-    class late_start
+    class main
     user camera
     group camera system inet input graphics
+    writepid /dev/cpuset/system-background/tasks
 
 service qseecomd /system/bin/qseecomd
     class core
@@ -1035,7 +1036,6 @@ on property:init.svc.bootanim=running
 
 on property:init.svc.bootanim=stopped
     start usf-post-boot
-    restart mediaserver
 
 on property:sys.boot_completed=1
     start qcom-post-boot
