@@ -13,7 +13,7 @@
 
 /dev/ttyHSL1                u:object_r:cir_device:s0
 
-/system/bin/hwaddrs         u:object_r:hwaddrs_exec:s0
+/(system|system/vendor)/bin/hwaddrs  u:object_r:hwaddrs_exec:s0
 /system/bin/imswmsproxy     u:object_r:imswmsproxy_exec:s0
 /system/bin/thermanager     u:object_r:thermanager_exec:s0
 /system/bin/timekeep        u:object_r:timekeep_exec:s0
