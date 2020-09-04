@@ -1044,7 +1044,7 @@ on property:init.svc.bootanim=stopped
 
 on property:sys.boot_completed=1
     start qcom-post-boot
-    setprop sys.io.scheduler "bfq"
+    setprop sys.io.scheduler "deadline"
     write /dev/kmsg "Boot completed"
 
 # OSS thermal management
