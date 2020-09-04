@@ -23,3 +23,6 @@
 
 # Bluetooth
 /data/misc/bluedroid/bdaddr				u:object_r:bluetooth_data_file:s0
+
+# kernel
+/sys/kernel/debug           u:object_r:debugfs:s0
