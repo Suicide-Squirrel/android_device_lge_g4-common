@@ -73,119 +73,118 @@ int main() {
 
     // WiFi mac handling
     if (stat(WIFI_CONFIG_FILE, &st) == -1) {
-	if (stat(WIFI_DATA_PATH, &st) == -1) {
-	    pwd = getpwnam("wifi");
-	    uid = pwd->pw_uid;
-	    grp = getgrnam("wifi");
-	    gid = grp->gr_gid;
+        if (stat(WIFI_DATA_PATH, &st) == -1) {
+            pwd = getpwnam("wifi");
+            uid = pwd->pw_uid;
+            grp = getgrnam("wifi");
+            gid = grp->gr_gid;
 
-	    if (mkdir(WIFI_DATA_PATH, 0775) < 0) {
-		ALOGE("%s: Error creating %s ! Will not continue! Returncode: %i", __func__, WIFI_DATA_PATH, errno);
-		return errno;
-	    }
-	    if (chown(WIFI_DATA_PATH, uid, gid) < 0) {
-		ALOGW("%s: Created missing WiFi data path (%s). Owned by %i:%i.", __func__, WIFI_DATA_PATH, uid, gid);
-		return errno;
-	    }
-	}
+            if (mkdir(WIFI_DATA_PATH, 0775) < 0) {
+                ALOGE("%s: Error creating %s ! Will not continue! Returncode: %i", __func__, WIFI_DATA_PATH, errno);
+                return errno;
+            }
+            if (chown(WIFI_DATA_PATH, uid, gid) < 0) {
+                ALOGW("%s: Created missing WiFi data path (%s). Owned by %i:%i.", __func__, WIFI_DATA_PATH, uid, gid);
+                return errno;
+            }
+        }
 
-	fd2 = open(WIFI_CONFIG_FILE, O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
-	write(fd2, "cur_etheraddr=", 14);
+        fd2 = open(WIFI_CONFIG_FILE, O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
+        write(fd2, "cur_etheraddr=", 14);
 
-	if (!blank(fd1, WIFI_HEX_ADDR)) {
+        if (!blank(fd1, WIFI_HEX_ADDR)) {
 
-	    for(i = 0; i < 6; i++) {
-		lseek(fd1, 0x3000 + i, SEEK_SET);
-		lseek(fd2, 0, SEEK_END);
-		read(fd1, &macbyte, 1);
-		sprintf(macbuf, "%02x", macbyte);
-		write(fd2, &macbuf, 2);
-		if(i != 5) write(fd2, ":", 1);
-	    }
-	    write(fd2, "\n", 1);
-	    ALOGI("%s: WiFi mac parsed from misc partition", __func__);
-	} else {
-	    srand(time(NULL)+123456789);
-	    memset(wifi_macaddr, 0, 20);
+            for(i = 0; i < 6; i++) {
+                lseek(fd1, 0x3000 + i, SEEK_SET);
+                lseek(fd2, 0, SEEK_END);
+                read(fd1, &macbyte, 1);
+                sprintf(macbuf, "%02x", macbyte);
+                write(fd2, &macbuf, 2);
+                if(i != 5) write(fd2, ":", 1);
+            }
+            write(fd2, "\n", 1);
+            ALOGI("%s: WiFi mac parsed from misc partition", __func__);
+        } else {
+            srand(time(NULL)+123456789);
+            memset(wifi_macaddr, 0, 20);
 
-	    // LG's MAC range is: 00:34:DA:00:00:00 - 00:34:DA:FF:FF:FF
-	    wifiMac[0] = 0x00;
-	    wifiMac[1] = 0x34;
-	    wifiMac[2] = 0xDA;
-	    wifiMac[3] = (uint8_t) rand() % 256;
-	    wifiMac[4] = (uint8_t) rand() % 256;
-	    wifiMac[5] = (uint8_t) rand() % 256;
+            // LG's MAC range is: 00:34:DA:00:00:00 - 00:34:DA:FF:FF:FF
+            wifiMac[0] = 0x00;
+            wifiMac[1] = 0x34;
+            wifiMac[2] = 0xDA;
+            wifiMac[3] = (uint8_t) rand() % 256;
+            wifiMac[4] = (uint8_t) rand() % 256;
+            wifiMac[5] = (uint8_t) rand() % 256;
 
-	    snprintf(wifi_macaddr, sizeof(wifi_macaddr), "%02X:%02X:%02X:%02X:%02X:%02X\n",
-		wifiMac[0], wifiMac[1], wifiMac[2], wifiMac[3], wifiMac[4], wifiMac[5]);
+            snprintf(wifi_macaddr, sizeof(wifi_macaddr), "%02X:%02X:%02X:%02X:%02X:%02X\n",
+                wifiMac[0], wifiMac[1], wifiMac[2], wifiMac[3], wifiMac[4], wifiMac[5]);
 
-	    ALOGE("%s: The misc partition is corrupt / missing MAC. Generated a random WiFi mac: %s", __func__, wifi_macaddr);
-	    write(fd2, wifi_macaddr, strlen(wifi_macaddr));
-	    write(fd2, "\n", 1);
-	}
-	close(fd2); // close config
+            ALOGE("%s: The misc partition is corrupt / missing MAC. Generated a random WiFi mac: %s", __func__, wifi_macaddr);
+            write(fd2, wifi_macaddr, strlen(wifi_macaddr));
+            write(fd2, "\n", 1);
+        }
+        close(fd2); // close config
     } else {
-	ALOGI("%s: MAC for WiFi already defined (%s)", __func__, WIFI_CONFIG_FILE);
+        ALOGI("%s: MAC for WiFi already defined (%s)", __func__, WIFI_CONFIG_FILE);
     }
 
     // Bluetooth mac handling
     if (stat(BT_CONFIG_FILE, &st) == -1) {
-	if (stat(BT_DATA_PATH, &st) == -1) {
-	    pwd = getpwnam("bluetooth");
-	    uid = pwd->pw_uid;
-	    grp = getgrnam("bluetooth");
-	    gid = grp->gr_gid;
+        if (stat(BT_DATA_PATH, &st) == -1) {
+            pwd = getpwnam("bluetooth");
+            uid = pwd->pw_uid;
+            grp = getgrnam("bluetooth");
+            gid = grp->gr_gid;
 
-	    if (mkdir(BT_DATA_PATH, 0775) < 0) {
-		ALOGE("%s: Error creating %s ! Will not continue! Returncode: %i", __func__, BT_DATA_PATH, errno);
-		return errno;
-	    }
-	    if (chown(BT_DATA_PATH, uid, gid) < 0) {
-		ALOGW("%s: Created missing WiFi data path (%s). Owned by %i:%i.", __func__, BT_DATA_PATH, uid, gid);
-		return errno;
-	    }
-	    ALOGW("%s: Created missing Bluetooth data path (%s). Owned by %i:%i.", __func__, BT_DATA_PATH, uid, gid);
-	}
+            if (mkdir(BT_DATA_PATH, 0775) < 0) {
+                ALOGE("%s: Error creating %s ! Will not continue! Returncode: %i", __func__, BT_DATA_PATH, errno);
+                return errno;
+            }
+            if (chown(BT_DATA_PATH, uid, gid) < 0) {
+                ALOGW("%s: Created missing WiFi data path (%s). Owned by %i:%i.", __func__, BT_DATA_PATH, uid, gid);
+                return errno;
+            }
+            ALOGW("%s: Created missing Bluetooth data path (%s). Owned by %i:%i.", __func__, BT_DATA_PATH, uid, gid);
+        }
 
-	fd2 = open(BT_CONFIG_FILE, O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
+        fd2 = open(BT_CONFIG_FILE, O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
 
-	if (!blank(fd1, BT_HEX_ADDR)) {
-	    for(i = 0; i < 6; i++) {
-		lseek(fd1, 0x4000 + i, SEEK_SET);
-		lseek(fd2, 0, SEEK_END);
-		read(fd1, &macbyte, 1);
-		sprintf(macbuf, "%02x", macbyte);
-		write(fd2, &macbuf, 2);
-		if(i != 5) write(fd2, ":", 1);
-	    }
-	    ALOGI("%s: Bluetooth mac parsed from misc partition", __func__);
-	} else {
-	    srand(time(NULL));
-	    memset(bt_macaddr, 0, 20);
-	    // LG's MAC range is: 00:34:DA:00:00:00 - 00:34:DA:FF:FF:FF
-	    btMac[0] = 0x00;
-	    btMac[1] = 0x34;
-	    btMac[2] = 0xDA;
-	    btMac[3] = (uint8_t) rand() % 256;
-	    btMac[4] = (uint8_t) rand() % 256;
-	    btMac[5] = (uint8_t) rand() % 256;
+        if (!blank(fd1, BT_HEX_ADDR)) {
+            for(i = 0; i < 6; i++) {
+                lseek(fd1, 0x4000 + i, SEEK_SET);
+                lseek(fd2, 0, SEEK_END);
+                read(fd1, &macbyte, 1);
+                sprintf(macbuf, "%02x", macbyte);
+                write(fd2, &macbuf, 2);
+                if(i != 5) write(fd2, ":", 1);
+            }
+            ALOGI("%s: Bluetooth mac parsed from misc partition", __func__);
+        } else {
+            srand(time(NULL));
+            memset(bt_macaddr, 0, 20);
+            // LG's MAC range is: 00:34:DA:00:00:00 - 00:34:DA:FF:FF:FF
+            btMac[0] = 0x00;
+            btMac[1] = 0x34;
+            btMac[2] = 0xDA;
+            btMac[3] = (uint8_t) rand() % 256;
+            btMac[4] = (uint8_t) rand() % 256;
+            btMac[5] = (uint8_t) rand() % 256;
 
-	    snprintf(bt_macaddr, sizeof(bt_macaddr), "%02X:%02X:%02X:%02X:%02X:%02X\n",
-		btMac[0], btMac[1], btMac[2], btMac[3], btMac[4], btMac[5]);
+            snprintf(bt_macaddr, sizeof(bt_macaddr), "%02X:%02X:%02X:%02X:%02X:%02X\n",
+                btMac[0], btMac[1], btMac[2], btMac[3], btMac[4], btMac[5]);
 
-	    ALOGE("%s: The misc partition is corrupt / missing MAC. Generated a random Bluetooth mac: %s", __func__, bt_macaddr);
-	    write(fd2, bt_macaddr, strlen(bt_macaddr));
-	}
-	close(fd2); // close bdaddr
+            ALOGE("%s: The misc partition is corrupt / missing MAC. Generated a random Bluetooth mac: %s", __func__, bt_macaddr);
+            write(fd2, bt_macaddr, strlen(bt_macaddr));
+        }
+        close(fd2); // close bdaddr
     } else {
-	ALOGI("%s: MAC for Bluetooth already defined (%s)", __func__, BT_CONFIG_FILE);
+        ALOGI("%s: MAC for Bluetooth already defined (%s)", __func__, BT_CONFIG_FILE);
     }
     close(fd1); // close misc
     return 0;
 }
 
-int blank(int fd, int offset)
-{
+int blank(int fd, int offset) {
     char macbyte;
     int i, count = 0;
 
@@ -193,14 +192,14 @@ int blank(int fd, int offset)
         lseek(fd, offset + i, SEEK_SET);
         read(fd, &macbyte, 1);
 
-        if (!macbyte)
+        if (!macbyte) {
             count++;
-        else
+        } else {
             count = 0;
-
-        if (count > 2)
+        }
+        if (count > 2) {
             return 1;
+        }
     }
-
     return 0;
 }
