@@ -47,7 +47,7 @@
 #include "loc_util_log.h"
 
 #define LOC_SYNC_REQ_BUFFER_SIZE 8
-#define GPS_CONF_FILE "/etc/gps.conf"
+#define GPS_CONF_FILE "/system/etc/gps.conf"
 pthread_mutex_t  loc_sync_call_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static bool loc_sync_call_initialized = false;
