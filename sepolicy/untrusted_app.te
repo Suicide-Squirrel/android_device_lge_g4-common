@@ -1,0 +1,72 @@
+# perfd stats
+allow untrusted_app perfd:dir r_dir_perms;
+# external sdcard
+allow untrusted_app storage_stub_file:dir r_dir_perms;
+# user mode helper
+allow untrusted_app usermodehelper:file r_file_perms;
+
+# services and hals and system app
+allow untrusted_app mdnsd:dir r_dir_perms;
+allow untrusted_app platform_app:dir r_dir_perms;
+allow untrusted_app system_app:dir r_dir_perms;
+allow untrusted_app system_app:file r_file_perms;
+allow untrusted_app kernel:dir r_dir_perms;
+allow untrusted_app qmuxd:dir r_dir_perms;
+allow untrusted_app adbd:dir r_dir_perms;
+allow untrusted_app themeservice_app:dir r_dir_perms;
+allow untrusted_app per_mgr:dir r_dir_perms;
+allow untrusted_app audiod:dir r_dir_perms;
+allow untrusted_app thermanager:dir r_dir_perms;
+allow untrusted_app sensors:dir r_dir_perms;
+allow untrusted_app perfprofd:dir r_dir_perms;
+allow untrusted_app mm-qcamerad:dir r_dir_perms;
+allow untrusted_app tee:dir r_dir_perms;
+allow untrusted_app vold:dir r_dir_perms;
+allow untrusted_app logd:dir r_dir_perms;
+allow untrusted_app debugfs:dir r_dir_perms;
+allow untrusted_app radio:dir r_dir_perms;
+allow untrusted_app system_server:dir r_dir_perms;
+allow untrusted_app sdcardd:dir r_dir_perms;
+allow untrusted_app ueventd:dir r_dir_perms;
+allow untrusted_app shell:dir r_dir_perms;
+allow untrusted_app wpa:dir r_dir_perms;
+allow untrusted_app nfc:dir r_dir_perms;
+allow untrusted_app gatekeeperd:dir r_dir_perms;
+allow untrusted_app zygote:dir r_dir_perms;
+allow untrusted_app zygote:file r_file_perms;
+allow untrusted_app imswmsproxy:dir r_dir_perms;
+allow untrusted_app adsprpcd:dir r_dir_perms;
+allow untrusted_app netmgrd:dir r_dir_perms;
+allow untrusted_app init:dir r_dir_perms;
+allow untrusted_app healthd:dir r_dir_perms;
+allow untrusted_app lmkd:dir r_dir_perms;
+allow untrusted_app servicemanager:dir r_dir_perms;
+allow untrusted_app surfaceflinger:dir r_dir_perms;
+allow untrusted_app rfs_access:dir r_dir_perms;
+allow untrusted_app msm_irqbalanced:dir r_dir_perms;
+allow untrusted_app rmt_storage:dir r_dir_perms;
+allow untrusted_app netd:dir r_dir_perms;
+allow untrusted_app debuggerd:dir r_dir_perms;
+allow untrusted_app rild:dir r_dir_perms;
+allow untrusted_app drmserver:dir r_dir_perms;
+allow untrusted_app mediaserver:dir r_dir_perms;
+allow untrusted_app installd:dir r_dir_perms;
+allow untrusted_app keystore:dir r_dir_perms;
+
+binder_call(untrusted_app, battery_service)
+allow untrusted_app battery_service:service_manager find;
+
+dontaudit untrusted_app dalvikcache_data_file:{ file dir } execmod;
+dontaudit untrusted_app debugfs:file r_file_perms;
+
+# partitions
+allow untrusted_app persist_lg_data_file:dir r_dir_perms;
+allow untrusted_app persist_lg_data_file:file r_file_perms;
+allow untrusted_app sensors_data_file:dir r_dir_perms;
+allow untrusted_app sensors_data_file:file r_file_perms;
+allow untrusted_app mpt_file:dir r_dir_perms;
+allow untrusted_app firmware_data_file:dir r_dir_perms;
+allow untrusted_app firmware_data_file:file r_file_perms;
+
+dontaudit untrusted_app unlabeled:dir r_dir_perms;
+dontaudit untrusted_app device:dir r_dir_perms;
