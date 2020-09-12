@@ -47,10 +47,6 @@
         <!-- Input devices -->
     </bit_width_configs>
 
-    <pcm_ids>
-        <usecase name="USECASE_AUDIO_3RDP_SPKR_PROT_TX" type="in" id="81"/>
-    </pcm_ids>
-
     <device_names>
         <!-- Output devices -->
         <device name="SND_DEVICE_OUT_VOIP_HANDSET" alias="voip-earpiece" />
