@@ -31,6 +31,7 @@ import init.device.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
+    chmod 0755 /sys/kernel/debug
     symlink /data/tombstones /tombstones
 
     # Mount pstore file system on /mnt/pstore
@@ -59,8 +60,7 @@ on early-fs
     chown system /sys/process/task_comm_list
 
 on init
-    # Shim libs
-    export LD_SHIM_LIBS /system/vendor/lib/libwvm.so|libshims_wvm.so    
+    export LD_SHIM_LIBS /system/lib/libril.so|liblge.so:/system/lib64/libril.so|liblge.so
 
     mkdir /firmware 0771 system system
     mkdir /firmware/image 0771 system system
@@ -84,9 +84,12 @@ on init
     # Set permissions for drm partition
     mkdir /persist-lg 0771 system system
 
+    # Support legacy paths
+    symlink /sdcard /mnt/sdcard
     symlink /sdcard /storage/sdcard0
 
 on early-boot
+    start qcamerasvr
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
 
@@ -207,12 +210,14 @@ on boot
     chown system graphics /sys/class/graphics/fb1/product_description
     chown system graphics /sys/class/graphics/fb1/video_mode
     chown system graphics /sys/class/graphics/fb1/format_3d
+    chown system graphics /sys/devices/virtual/graphics/fb1/s3d_mode
     chmod 0664 /sys/devices/virtual/graphics/fb1/hpd
     chmod 0664 /sys/devices/virtual/graphics/fb1/hdcp/tp
     chmod 0664 /sys/devices/virtual/graphics/fb1/vendor_name
     chmod 0664 /sys/devices/virtual/graphics/fb1/product_description
     chmod 0664 /sys/devices/virtual/graphics/fb1/video_mode
     chmod 0664 /sys/devices/virtual/graphics/fb1/format_3d
+    chmod 0664 /sys/devices/virtual/graphics/fb1/s3d_mode
 
     # Set the console loglevel to < KERN_INFO
     # Set the default message loglevel to KERN_INFO
@@ -220,6 +225,12 @@ on boot
 
     # Allow access for CCID command/response timeout configuration
     chown system system /sys/module/ccid_bridge/parameters/bulk_msg_timeout
+
+    # Create folder for timekeep
+    mkdir /data/time 0770 system system
+    mkdir /data/vendor/time 0770 system system
+    chmod 0770 /data/time/ats_2
+    chmod 0770 /data/vendor/time/ats_2
 
     # Flashlight
     chown system system /sys/class/leds/flashlight/brightness
@@ -261,11 +272,6 @@ on boot
 
     # HAL looks for pn54x but kernel driver uses pn547
     symlink /dev/pn547 /dev/pn54x
-
-    # Begin hdmi res_info
-    chown system system /sys/devices/virtual/graphics/fb1/res_info
-    chmod 644 /sys/devices/virtual/graphics/fb1/res_info
-    # End hdmi res_info
 
 # START touch_driver
     chown system system /sys/devices/virtual/input/lge_touch/incoming_call
@@ -366,8 +372,13 @@ on boot
     write /sys/devices/virtual/thermal/thermal_zone14/ctrl_crit_temp 0
 
 on post-fs
+    start qseecomd
+    wait_for_prop sys.listeners.registered true
     # for OOBE and PackageManager to access fotaBoot
     chmod 0666 /cache/recovery/last_fotaBoot
+
+    # WiFi and BT mac handler
+    start hwaddrs
 
     #change permissions on vmallocinfo so we can grab it from bugreports
     chown root log /proc/vmallocinfo
@@ -396,6 +407,9 @@ on post-fs-data
     write /data/misc/radio/copy_complete 0
     chown radio radio /data/misc/radio/copy_complete
     chmod 0660 /data/misc/radio/copy_complete
+
+    # Socket location for RIDL
+    mkdir /dev/socket/RIDL 2770 system system
 
     # Create directory for TZ Apps
     mkdir /data/misc/qsee 0770 system system
@@ -508,7 +522,6 @@ on post-fs-data
     chmod 2755 /data/misc/perfd
     mkdir /data/system/perfd 0770 root system
     chmod 2770 /data/system/perfd
-    rm /data/system/perfd/default_values
 
     # Create directory used by sensor subsystem
     mkdir /persist/sensors 0775 system root
@@ -551,6 +564,13 @@ on post-fs-data
     chown system system /sys/devices/virtual/graphics/fb0/rgb
     chmod 0660 /sys/devices/virtual/graphics/fb0/rgb
 
+    # RIDL data
+    mkdir /data/misc/SelfHost/ 0710 system shell
+    mkdir /data/misc/SelfHost/QCLogs/ 2750 system shell
+    mkdir /data/misc/SelfHost/QCLogs/temp/ 0700 system shell
+    mkdir /data/misc/SelfHost/storage/ 0700 system shell
+    mkdir /data/misc/SelfHost/Running/ 2750 system shell
+
 service ssr_setup /system/bin/ssr_setup
     oneshot
     disabled
@@ -570,6 +590,9 @@ on property:persist.sys.ssr.enable_ramdumps=1
 
 on property:persist.sys.ssr.enable_ramdumps=0
     write /sys/module/subsystem_restart/parameters/enable_ramdumps 0
+
+on property:init.svc.wpa_supplicant=stopped
+    stop dhcpcd
 
 on property:bluetooth.isEnabled=true
     start btwlancoex
@@ -734,6 +757,74 @@ service amp_unload /system/bin/amploader -u
     disabled
     oneshot
 
+service dhcpcd_wlan0 /system/bin/dhcpcd -ABKLG
+    class late_start
+    disabled
+    oneshot
+
+service dhcpcd_p2p /system/bin/dhcpcd -ABKLG
+    class late_start
+    disabled
+    oneshot
+
+service iprenew_wlan0 /system/bin/dhcpcd -n
+    class late_start
+    disabled
+    oneshot
+
+service iprenew_p2p /system/bin/dhcpcd -n
+    class late_start
+    disabled
+    oneshot
+
+service ptt_socket_app /system/bin/ptt_socket_app -d
+    class main
+    user root
+    group root
+    disabled
+    oneshot
+
+service ptt_ffbm /system/bin/ptt_socket_app -f -d
+    user root
+    group root
+    disabled
+    oneshot
+
+service ftm_ffbm /system/bin/ftmdaemon
+    user root
+    group root
+    disabled
+    oneshot
+
+service dhcpcd_bt-pan /system/bin/dhcpcd -BKLG
+    class late_start
+    disabled
+    oneshot
+
+service iprenew_bt-pan /system/bin/dhcpcd -n
+    class late_start
+    disabled
+    oneshot
+
+service dhcpcd_bnep0 /system/bin/dhcpcd -BKLG
+    disabled
+    oneshot
+
+service dhcpcd_bnep1 /system/bin/dhcpcd -BKLG
+    disabled
+    oneshot
+
+service dhcpcd_bnep2 /system/bin/dhcpcd -BKLG
+    disabled
+    oneshot
+
+service dhcpcd_bnep3 /system/bin/dhcpcd -BKLG
+    disabled
+    oneshot
+
+service dhcpcd_bnep4 /system/bin/dhcpcd -BKLG
+    disabled
+    oneshot
 
 service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
     class late_start
@@ -741,7 +832,6 @@ service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
     group system
     disabled
     oneshot
-
 
 on property:crypto.driver.load=1
      insmod /system/lib/modules/qce.ko
@@ -781,7 +871,7 @@ service battery_monitor /system/bin/battery_monitor
     group system
     disabled
 
-service ril-daemon /system/bin/rild
+service_redefine ril-daemon /system/bin/rild
     class main
     socket rild stream 660 root radio
     socket sap_uim_socket1 stream 660 bluetooth bluetooth
@@ -873,11 +963,10 @@ service vm_bms /system/bin/vm_bms
     user root
     group root
 
-service msm_irqbalance /system/bin/msm_irqbalance -f /system/etc/msm_irqbalance.conf
-    class core
+service msm_irqbalance /system/bin/msm_irqbalance -f /system/vendor/etc/msm_irqbalance.conf
+   class core
     user root
     group root
-    writepid /dev/cpuset/system-background/tasks
 
 # init.qcom.usb.sh configure RNDIS to go through HW IPA
 service qcom-usb-sh /system/bin/sh /init.qcom.usb.sh
@@ -907,7 +996,7 @@ service wpa_supplicant /system/bin/wpa_supplicant \
 
 #start camera server as daemon
 service qcamerasvr /system/bin/mm-qcamera-daemon
-    class late_start
+    class main
     user camera
     group camera system inet input graphics
     writepid /dev/cpuset/system-background/tasks
@@ -916,12 +1005,13 @@ service qseecomd /system/bin/qseecomd
     class core
     user root
     group root
+    disabled
+    writepid /dev/cpuset/foreground/tasks
 
 service perfd /system/vendor/bin/perfd
     class main
     user root
-    group system
-    writepid /dev/cpuset/system-background/tasks
+    disabled
 
 service per_mgr /system/bin/pm-service
     class core
@@ -953,17 +1043,25 @@ on property:init.svc.bootanim=running
 
 on property:init.svc.bootanim=stopped
     start usf-post-boot
-    restart cameraserver
 
 on property:sys.boot_completed=1
     start qcom-post-boot
-    setprop sys.io.scheduler "bfq"
+    setprop sys.io.scheduler "deadline"
     write /dev/kmsg "Boot completed"
 
-service time_daemon /system/bin/time_daemon
+# OSS thermal management
+service thermanager /system/bin/thermanager /system/etc/thermanager.xml
     class late_start
     user root
     group root
+
+service timekeep /system/bin/timekeep restore
+    class late_start
+    user system
+    group system
+    capabilities SYS_TIME
+    oneshot
+    writepid /dev/cpuset/system-background/tasks
 
 service adsprpcd /system/bin/adsprpcd
    class main
@@ -1034,11 +1132,12 @@ service zchgd_offmode /system/bin/zchgd -pseudooffmode -autostop -poffmodewarn
     group root graphics
     disabled
 
-service hwaddrs /system/bin/hwaddrs
+service hwaddrs /system/vendor/bin/hwaddrs
     class core
     user root
     group system wifi
     oneshot
+    disabled
 
 # Running hwaddrs under init is enforcing 0600, we need more
 on property:init.svc.hwaddrs=stopped
@@ -1080,6 +1179,12 @@ service lge-sensor-sh /system/bin/sh /init.msm8992.sensor.sh
     oneshot
     seclabel u:r:sensors:s0
 # start sensor daemon as core class [END]
+
+service RIDL /system/vendor/bin/RIDLClient.exe
+    class late_start
+    oneshot
+    user system
+    group system inet log sdcard_r sdcard_rw
 
 on property:gsm.version.baseband=""
     start baseband-sh

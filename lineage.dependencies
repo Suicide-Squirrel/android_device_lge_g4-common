@@ -4,10 +4,6 @@
     "target_path": "kernel/lge/msm8992"
   },
   {
-    "repository": "android_device_lge_common",
-    "target_path": "device/lge/common"
-  },
-  {
     "repository": "android_device_qcom_common",
     "target_path": "device/qcom/common"
   },
@@ -20,11 +16,7 @@
     "target_path": "hardware/sony/timekeep"
   },
   {
-    "repository": "android_packages_apps_FlipFlap",
-    "target_path": "packages/apps/FlipFlap"
-  },
-  {
-    "repository": "android_packages_resources_devicesettings",
-    "target_path": "packages/resources/devicesettings"
+    "repository": "android_system_tools_dtbtool",
+    "target_path": "system/tools/dtbtool"
   }
 ]

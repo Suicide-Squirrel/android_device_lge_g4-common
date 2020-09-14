@@ -1,5 +1,0 @@
-allow mediacodec persist_lg_data_file:dir { search };
-
-allow mediacodec mpctl_socket:dir { search };
-
-allow mediacodec rootfs:lnk_file { getattr };

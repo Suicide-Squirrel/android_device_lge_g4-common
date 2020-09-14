@@ -41,16 +41,16 @@
 
          Must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLevels">
-        <item>3</item>
-        <item>9</item>
-        <item>32</item>
-        <item>79</item>
-        <item>156</item>
-        <item>308</item>
-        <item>601</item>
-        <item>1157</item>
-        <item>2319</item>
-        <item>4763</item>
+        <item>1</item>
+        <item>5</item>
+        <item>30</item>
+        <item>78</item>
+        <item>158</item>
+        <item>302</item>
+        <item>606</item>
+        <item>1150</item>
+        <item>2318</item>
+        <item>4000</item>
     </integer-array>
 
     <!-- Array of output values for LCD backlight corresponding to the LUX values
@@ -115,6 +115,10 @@
     <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
     <bool name="config_intrusiveNotificationLed">true</bool>
 
+    <!-- Does the notification LED support multiple colors?
+         Used to decide if the user can change the colors -->
+    <bool name="config_multiColorNotificationLed">true</bool>
+
     <!-- Default color for notification LED is white. -->
     <color name="config_defaultNotificationColor">#ffffffff</color>
 
@@ -123,6 +127,9 @@
 
     <!-- Is the battery LED intrusive? Used to decide if there should be a disable option -->
     <bool name="config_intrusiveBatteryLed">true</bool>
+
+    <!-- Does the battery LED support multiple colors? Used to decide if the user can change the colors -->
+    <bool name="config_multiColorBatteryLed">true</bool>
 
     <!-- reference volume index for music stream to limit headphone volume and display warning -->
     <integer name="config_safe_media_volume_index">6</integer>
@@ -280,12 +287,6 @@
          rmem_min,rmem_def,rmem_max,wmem_min,wmem_def,wmem_max -->
     <string name="config_wifi_tcp_buffers" translatable="false">4096,221184,3461120,4096,221184,3461120</string>
 
-    <!-- The RadioAccessFamilies supported by the device.
-         Empty is viewed as "all".  Only used on devices which
-         don't support RIL_REQUEST_GET_RADIO_CAPABILITY
-         format is UMTS|LTE|... -->
-    <string translatable="false" name="config_radio_access_family">GSM|WCDMA|LTE</string>
-
     <!-- Configure mobile tcp buffer sizes in the form:
          rat-name:rmem_min,rmem_def,rmem_max,wmem_min,wmem_def,wmem_max
          If no value is found for the rat-name in use, the system default will be applied.
@@ -318,10 +319,7 @@
     <!-- Flag specifying whether VoLTE availability is based on provisioning -->
     <bool name="config_carrier_volte_provisioned">false</bool>
 
-    <!-- Boolean indicating if current platform supports BLE peripheral mode -->
-    <bool name="config_bluetooth_le_peripheral_mode_supported">true</bool>
-  
-      <!-- Enable blur support -->
-    <bool name="config_uiBlurEnabled">true</bool>
+    <!-- Enable blur support -->
+    <bool name="config_ui_blur_enabled">true</bool>
 
 </resources>
