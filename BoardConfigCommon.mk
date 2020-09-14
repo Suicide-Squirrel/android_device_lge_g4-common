@@ -116,7 +116,7 @@ BOARD_BLUEDROID_VENDOR_CONF := device/lge/g4-common/bluetooth/libbt_vndcfg.txt
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/lge/g4-common/bluetooth
 
 # RIL
-BOARD_RIL_CLASS := ../../../device/lge/g4-common/ril/
+BOARD_RIL_CLASS := $(COMMON_PATH)/ril/
 
 # GPS
 USE_DEVICE_SPECIFIC_GPS := true
@@ -125,7 +125,6 @@ TARGET_NO_RPC := true
 
 # Camera
 USE_DEVICE_SPECIFIC_CAMERA := true
-COMMON_GLOBAL_CFLAGS += -DLG_CAMERA_HARDWARE
 
 # Display
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
@@ -137,8 +136,8 @@ USE_OPENGL_RENDERER := true
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
 
-HAVE_ADRENO_SOURCE:= false
-OVERRIDE_RS_DRIVER:= libRSDriver_adreno.so
+HAVE_ADRENO_SOURCE := false
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 
 # Fonts
 EXTENDED_FONT_FOOTPRINT := true
@@ -148,11 +147,9 @@ TARGET_PROVIDES_LIBLIGHT := true
 
 # Offmode Charging
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
-#BOARD_CHARGER_ENABLE_SUSPEND := true
-
-COMMON_GLOBAL_CFLAGS += \
-    -DBOARD_CHARGING_CMDLINE_NAME='"androidboot.mode"' \
-    -DBOARD_CHARGING_CMDLINE_VALUE='"chargerlogo"'
+BOARD_CHARGER_ENABLE_SUSPEND := false
+BOARD_CHARGING_CMDLINE_NAME := "androidboot.mode"
+BOARD_CHARGING_CMDLINE_VALUE := "chargerlogo"
 
 # Power
 WITH_CM_CHARGER := false
@@ -161,6 +158,8 @@ BOARD_CHARGER_ENABLE_SUSPEND := false
 TARGET_POWERHAL_VARIANT := qcom
 BACKLIGHT_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TARGET_TAP_TO_WAKE_NODE := "/sys/devices/virtual/input/lge_touch/tap2wake"
+
+TARGET_BOOTANIMATION_MULTITHREAD_DECODE := true
 
 # Qualcomm support
 BOARD_USES_QCOM_HARDWARE := true
