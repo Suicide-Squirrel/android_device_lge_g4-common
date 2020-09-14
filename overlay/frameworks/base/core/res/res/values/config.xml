@@ -117,7 +117,7 @@
 
     <!-- Does the notification LED support multiple colors?
          Used to decide if the user can change the colors -->
-    <bool name="config_multiColorNotificationLed">true</bool>
+<!--    <bool name="config_multiColorNotificationLed">true</bool> -->
 
     <!-- Default color for notification LED is white. -->
     <color name="config_defaultNotificationColor">#ffffffff</color>
@@ -129,7 +129,7 @@
     <bool name="config_intrusiveBatteryLed">true</bool>
 
     <!-- Does the battery LED support multiple colors? Used to decide if the user can change the colors -->
-    <bool name="config_multiColorBatteryLed">true</bool>
+<!--    <bool name="config_multiColorBatteryLed">true</bool> -->
 
     <!-- reference volume index for music stream to limit headphone volume and display warning -->
     <integer name="config_safe_media_volume_index">6</integer>
@@ -320,6 +320,6 @@
     <bool name="config_carrier_volte_provisioned">false</bool>
 
     <!-- Enable blur support -->
-    <bool name="config_ui_blur_enabled">true</bool>
+<!--    <bool name="config_ui_blur_enabled">true</bool> -->
 
 </resources>
