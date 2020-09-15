@@ -5,3 +5,6 @@ allow sensors shell_exec:file { entrypoint read };
 allow sensors property_socket:sock_file { write };
 allow sensors sensors_prop:property_service { set };
 allow sensors init:unix_stream_socket { connectto };
+
+allow sensors shell_exec:file getattr;
+allow sensors vendor_toolbox_exec:file { execute execute_no_trans getattr open read };

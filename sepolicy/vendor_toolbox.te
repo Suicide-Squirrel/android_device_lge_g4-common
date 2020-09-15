@@ -1,0 +1,4 @@
+# Toolbox installation for vendor binaries / scripts
+# Non-vendor processes are not allowed to execute the binary
+# and is always executed without transition.
+type vendor_toolbox_exec, exec_type, vendor_file_type, file_type;

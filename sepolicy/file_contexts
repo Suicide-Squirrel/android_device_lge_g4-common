@@ -21,6 +21,7 @@
 /(system|system/vendor)/bin/imswmsproxy     u:object_r:imswmsproxy_exec:s0
 /(system|system/vendor)/bin/thermanager     u:object_r:thermanager_exec:s0
 /(system|system/vandor)/bin/timekeep        u:object_r:timekeep_exec:s0
+/(vendor|system/vendor)/bin/toybox_vendor   u:object_r:vendor_toolbox_exec:s0
 
 # Bluetooth
 /(data|data/vendor)/misc/bdaddr             u:object_r:bluetooth_data_file:s0
