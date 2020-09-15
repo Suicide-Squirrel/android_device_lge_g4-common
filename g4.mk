@@ -233,7 +233,8 @@ PRODUCT_PACKAGES += \
 
 # Power
 PRODUCT_PACKAGES += \
-    power.msm8992
+    power.msm8992 \
+    libqti-iop-client
 
 # Wifi
 PRODUCT_PACKAGES += \
