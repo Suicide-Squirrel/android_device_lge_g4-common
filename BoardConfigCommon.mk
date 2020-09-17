@@ -116,6 +116,8 @@ BOARD_BLUEDROID_VENDOR_CONF := device/lge/g4-common/bluetooth/libbt_vndcfg.txt
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/lge/g4-common/bluetooth
 
 # RIL
+BOARD_PROVIDES_LIBRIL := true
+BOARD_PROVIDES_RILD := true
 BOARD_RIL_CLASS := $(COMMON_PATH)/ril/
 
 # GPS

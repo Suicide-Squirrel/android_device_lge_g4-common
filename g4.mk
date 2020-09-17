@@ -86,10 +86,6 @@ PRODUCT_PACKAGES += \
     init.msm8992.sensor.sh \
     init.baseband.sh
 
-# RIL
-PRODUCT_PACKAGES += \
-	liblge
-
 # Audio
 PRODUCT_PACKAGES += \
     audiod \
