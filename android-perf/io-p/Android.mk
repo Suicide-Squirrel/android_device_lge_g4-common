@@ -3,10 +3,10 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := \
-        io-p.c\
-        io-prefetch/dblayer.c\
-        io-prefetch/file_playback.c\
-        io-prefetch/maintain_db.c\
+        io-p.c \
+        io-prefetch/dblayer.c \
+        io-prefetch/file_playback.c \
+        io-prefetch/maintain_db.c \
         io-prefetch/list_capture.c
 
 LOCAL_SHARED_LIBRARIES := libcutils libsqlite
@@ -18,8 +18,7 @@ LOCAL_CFLAGS += \
         -DSERVER \
         -DCLIENT \
         -g0 \
-        -Wall \
-        #-DQC_DEBUG=1
+        -Wall
 
 LOCAL_MODULE := libqti-iop
 LOCAL_MODULE_TAGS := optional
@@ -45,11 +44,11 @@ include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 
-LOCAL_SRC_FILES :=  client.c\
-                    io-p.c\
-                    io-prefetch/dblayer.c\
-                    io-prefetch/file_playback.c\
-                    io-prefetch/maintain_db.c\
+LOCAL_SRC_FILES :=  client.c \
+                    io-p.c \
+                    io-prefetch/dblayer.c \
+                    io-prefetch/file_playback.c \
+                    io-prefetch/maintain_db.c \
                     io-prefetch/list_capture.c
 
 LOCAL_MODULE := libqti-iop-client
@@ -61,8 +60,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_CFLAGS += \
                 -DCLIENT \
                 -g0 \
-                -Wall \
-               #-DQC_DEBUG=1
+                -Wall
 
 LOCAL_SHARED_LIBRARIES := libcutils  libsqlite
 
