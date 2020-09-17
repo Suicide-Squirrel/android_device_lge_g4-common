@@ -18,7 +18,7 @@
  *
  */
 
-package org.cyanogenmod.quickcircle;
+package org.lineageos.quickcircle;
 
 import android.content.Context;
 import android.content.Intent;

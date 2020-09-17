@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.cyanogenmod.quickcircle"
+    package="org.lineageos.quickcircle"
     android:versionCode="1"
     android:versionName="1.0"
     android:sharedUserId="android.uid.system">
@@ -16,7 +16,7 @@
         android:label="QuickCircle"
         android:persistent="true">
 
-        <receiver android:name="org.cyanogenmod.quickcircle.BootCompletedReceiver">
+        <receiver android:name="org.lineageos.quickcircle.BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <category android:name="android.intent.category.DEFAULT" />

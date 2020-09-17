@@ -194,10 +194,10 @@ BOARD_NFC_DEVICE := "/dev/pn547"
 BOARD_HAL_STATIC_LIBRARIES := \
     libhealthd.msm8992
 
-# CMHW
+# LINEAGEHW
 BOARD_USES_CYANOGEN_HARDWARE := true
 BOARD_HARDWARE_CLASS := \
-    $(COMMON_PATH)/cmhw \
+    $(COMMON_PATH)/lineagehw \
     hardware/cyanogen/cmhw
 
 # inherit from the proprietary version

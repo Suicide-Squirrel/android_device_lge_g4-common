@@ -18,7 +18,7 @@
  *
  */
 
-package org.cyanogenmod.quickcircle;
+package org.lineageos.quickcircle;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,7 +30,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Settings.Secure.putString(context.getContentResolver(),
                                   Settings.Secure.IMMERSIVE_MODE_CONFIRMATIONS,
-                                  "org.cyanogenmod.quickcircle");
+                                  "org.lineageos.quickcircle");
 
         new CoverObserver(context).init();
     }
