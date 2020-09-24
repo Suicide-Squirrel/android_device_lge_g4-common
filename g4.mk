@@ -90,6 +90,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	liblge
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/voicemail-conf.xml:system/etc/voicemail-conf.xml
+
 # Audio
 PRODUCT_PACKAGES += \
     audiod \
@@ -98,6 +101,15 @@ PRODUCT_PACKAGES += \
     audio.r_submix.default \
     audio.usb.default \
     audio_policy.msm8992 \
+    audio_amplifier.default \
+    libaudio-resampler \
+    libqcompostprocbundle \
+    libqcomvisualizer \
+    libqcomvoiceprocessing \
+    libqcomvoiceprocessingdescriptors \
+    libtinyalsa \
+    libtinycompress \
+    libtinyxml \
     tinymix
 
 PRODUCT_PACKAGES += \
@@ -111,7 +123,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
     $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf \
     $(LOCAL_PATH)/audio/mixer_paths.xml:system/etc/mixer_paths.xml \
-    $(LOCAL_PATH)/audio/audio_output_policy.conf:system/vendor/etc/audio_output_policy.conf
+    $(LOCAL_PATH)/audio/audio_output_policy.conf:system/vendor/etc/audio_output_policy.conf \
+    $(LOCAL_PATH)/audio/aanc_tuning_mixer.txt:system/etc/aanc_tuning_mixer.txt
 
 ifeq ($(strip $(TARGET_DEVICE)),h811)
 PRODUCT_COPY_FILES += \
