@@ -52,6 +52,9 @@ allow untrusted_app drmserver:dir r_dir_perms;
 allow untrusted_app mediaserver:dir r_dir_perms;
 allow untrusted_app installd:dir r_dir_perms;
 allow untrusted_app keystore:dir r_dir_perms;
+# tp-io-7
+allow untrusted_app input_device:dir r_dir_perms;
+allow untrusted_app input_device:chr_file r_file_perms;
 
 binder_call(untrusted_app, battery_service)
 allow untrusted_app battery_service:service_manager find;
