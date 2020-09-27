@@ -11,5 +11,6 @@ allow mediaserver firmware_data_file:dir { search };
 allow mediaserver firmware_data_file:file { read getattr open };
 
 allow mediaserver multimedia_data_file:dir { search };
+allow mediaserver multimedia_data_file:file r_file_perms;
 
 allow mediaserver unlabeled:dir r_dir_perms;
