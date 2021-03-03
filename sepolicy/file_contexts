@@ -13,6 +13,11 @@
 
 /dev/ttyHSL[0-9]*                                                   u:object_r:console_device:s0
 
+# we switched from /misc to /grow! see:
+# https://github.com/Suicide-Squirrel/android_device_lge_g4-common/commit/5c5d4f3eee38003e90c75bb00b36def0f1f7d851
+/dev/block/platform/soc\.0/f9824900\.sdhci/by-name/grow             u:object_r:misc_block_device:s0
+/dev/block/bootdevice/by-name/grow                                  u:object_r:misc_block_device:s0
+
 ###################################
 # socket devices
 /dev/rfkill                                                         u:object_r:rfkill_device:s0
